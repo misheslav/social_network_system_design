@@ -387,12 +387,6 @@ paths:
           in: query
           schema:
             type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CommentDto'
       responses:
         '200':
           description: 'Last 10 comments'
@@ -746,7 +740,7 @@ paths:
         - name: cursor
           description: 'cursor on the last note. If not present returns last 5 notes'
           required: false
-          in: path
+          in: query
           schema:
             type: string
       responses:
@@ -865,10 +859,10 @@ components:
       description: 'Traveler note'
       type: object
       required:
-        - id
         - userId
         - text
         - position
+        - files
       properties:
         id:
           description: 'Post id'
@@ -901,6 +895,7 @@ components:
         position:
           description: "User's position"
           $ref: '#/components/schemas/PositionDto'
+
     PositionDto:
       description: 'Users coordinates'
       type: object
@@ -917,8 +912,9 @@ components:
     CommentDto:
       type: object
       required:
-        - level
-        - name
+        - userId
+        - userName
+        - text
       properties:
         id:
           description: 'Comment id'
