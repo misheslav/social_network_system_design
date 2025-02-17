@@ -1,0 +1,940 @@
+openapi: 3.0.1
+info:
+  title: 'Travel notes REST API'
+  version: '1.0'
+paths:
+  /api/v1/travelers/{userId}/notes:
+    post:
+      description: 'Publish a travel note'
+      tags:
+        - Notes
+      parameters:
+        - name: Authorization
+          description: 'Auth token'
+          required: true
+          in: header
+          schema:
+            type: string
+        - name: userId
+          description: 'base-64 encoded user id'
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteDto'
+      responses:
+        '200':
+          description: 'Published a travel note'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteDto'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+
+  /api/v1/travelers/{userId}/notes/{noteId}:
+    get:
+      description: 'Get travel note'
+      tags:
+        - Notes
+      parameters:
+        - name: Authorization
+          description: 'Auth token'
+          required: true
+          in: header
+          schema:
+            type: string
+        - name: userId
+          description: 'base-64 encoded user id'
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: noteId
+          description: 'base-64 encoded note id'
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Published a travel note'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteDto'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '404':
+          description: 'User not found/Note not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+
+    put:
+      description: 'Edit travel note'
+      tags:
+        - Notes
+      parameters:
+        - name: Authorization
+          description: 'Auth token'
+          required: true
+          in: header
+          schema:
+            type: string
+        - name: userId
+          description: 'base-64 encoded user id'
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: noteId
+          description: 'base-64 encoded note id'
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteDto'
+      responses:
+        '200':
+          description: 'Published a travel note'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteDto'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '404':
+          description: 'User not found/Note not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+
+    delete:
+      description: 'Delete travel note'
+      tags:
+        - Notes
+      parameters:
+        - name: Authorization
+          description: 'Auth token'
+          required: true
+          in: header
+          schema:
+            type: string
+        - name: userId
+          description: 'base-64 encoded user id'
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: noteId
+          description: 'base-64 encoded note id'
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'Note was deleted'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '404':
+          description: 'User not found/Note not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+
+  /api/v1/travelers/{userId}/notes/images:
+    get:
+      description: 'List images for non published note'
+      tags:
+        - Notes
+        - Images
+      parameters:
+        - name: Authorization
+          description: 'Auth token'
+          required: true
+          in: header
+          schema:
+            type: string
+        - name: userId
+          description: 'base-64 encoded user id'
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'List of uploaded photos URI'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '404':
+          description: 'User not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+
+    post:
+      description: 'Upload images'
+      tags:
+        - Notes
+        - Images
+      parameters:
+        - name: Authorization
+          description: 'Auth token'
+          required: true
+          in: header
+          schema:
+            type: string
+        - name: userId
+          description: 'base-64 encoded user id'
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/multipart-files:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: 'List of uploaded photos URI'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '404':
+          description: 'User not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '400':
+          description: 'Image was not uploaded'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+
+  /api/v1/travelers/{userId}/notes/{noteId}/comments:
+    get:
+      description: 'List comments for a note'
+      tags:
+        - Notes
+        - Comments
+      parameters:
+        - name: Authorization
+          description: 'Auth token'
+          required: true
+          in: header
+          schema:
+            type: string
+        - name: userId
+          description: 'base-64 encoded user id'
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: noteId
+          description: 'base-64 encoded note id'
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: cursor
+          description: 'cursor on last comment id on screen. If not present return last 10 comments'
+          required: false
+          in: query
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentDto'
+      responses:
+        '200':
+          description: 'Last 10 comments'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentDto'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '404':
+          description: 'User not found/note not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '400':
+          description: 'Comment was not published'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+
+    post:
+      description: 'Publish a comment'
+      tags:
+        - Notes
+        - Comments
+      parameters:
+        - name: Authorization
+          description: 'Auth token'
+          required: true
+          in: header
+          schema:
+            type: string
+        - name: userId
+          description: 'base-64 encoded user id'
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: noteId
+          description: 'base-64 encoded note id'
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentDto'
+      responses:
+        '200':
+          description: 'Last 10 comments'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentDto'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '404':
+          description: 'User not found/note not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '400':
+          description: 'Comment was not published'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+
+  /api/v1/travelers/{userId}/notes/{noteId}/comments/{commentId}:
+    put:
+      description: 'Edit comment'
+      tags:
+        - Notes
+        - Comments
+      parameters:
+        - name: Authorization
+          description: 'Auth token'
+          required: true
+          in: header
+          schema:
+            type: string
+        - name: userId
+          description: 'base-64 encoded user id'
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: noteId
+          description: 'base-64 encoded note id'
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: commentId
+          description: 'base-64 encoded comment id'
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentDto'
+      responses:
+        '200':
+          description: 'Last 10 comments'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentDto'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '404':
+          description: 'User not found/Note not found/Comment not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '400':
+          description: 'Comment was not edited'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+
+    delete:
+      description: 'Delete comment'
+      tags:
+        - Notes
+        - Comments
+      parameters:
+        - name: Authorization
+          description: 'Auth token'
+          required: true
+          in: header
+          schema:
+            type: string
+        - name: userId
+          description: 'base-64 encoded user id'
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: noteId
+          description: 'base-64 encoded note id'
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: commentId
+          description: 'base-64 encoded comment id'
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Last 10 comments'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentDto'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '404':
+          description: 'User not found/Note not found/Comment not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+
+  /api/v1/travelers/{userId}/notes/{noteId}/rate:
+    put:
+      description: 'Rate/unrate travel note'
+      tags:
+        - Notes
+      parameters:
+        - name: Authorization
+          description: 'Auth token'
+          required: true
+          in: header
+          schema:
+            type: string
+        - name: userId
+          description: 'base-64 encoded user id'
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: noteId
+          description: 'base-64 encoded note id'
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Published a travel note'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteDto'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '404':
+          description: 'User not found/Note not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+
+  /api/v1/travelers/{userId}/feed:
+    get:
+      description: 'Travelers news feed'
+      tags:
+        - Notes
+        - Feed
+      parameters:
+        - name: Authorization
+          description: 'Auth token'
+          required: true
+          in: header
+          schema:
+            type: string
+        - name: userId
+          description: 'base-64 encoded user id'
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: cursor
+          description: 'cursor on the last note. If not present returns last 5 notes'
+          required: false
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "List of traveler's notes"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NoteDto'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '404':
+          description: 'User not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+
+  /api/v1/travelers/{userId}/spots:
+    get:
+      description: 'Top 3 rated posts by pattern. If pattern not provided, return posts with closest spot'
+      tags:
+        - Notes
+        - Feed
+      parameters:
+        - name: Authorization
+          description: 'Auth token'
+          required: true
+          in: header
+          schema:
+            type: string
+        - name: userId
+          description: 'base-64 encoded user id'
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: pattern
+          description: 'Search pattern'
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: lat
+          description: 'Latitude'
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: lon
+          description: 'Longitude'
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "List of traveler's notes"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NoteDto'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '404':
+          description: 'User not found'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+components:
+  schemas:
+    NoteDto:
+      description: 'Traveler note'
+      type: object
+      required:
+        - id
+        - userId
+        - text
+        - position
+      properties:
+        id:
+          description: 'Post id'
+          type: integer
+          format: int64
+        userId:
+          description: 'User id'
+          type: integer
+          format: int64
+        createdAt:
+          description: 'Time of publishing'
+          type: integer
+          format: int64
+        text:
+          description: 'Description of a note'
+          type: string
+        comments:
+          description: 'Number of published comments'
+          type: integer
+          format: int32
+        rates:
+          description: 'Number of rates'
+          type: integer
+          format: int32
+        files:
+          description: 'List of uploaded files URI. Can be empty'
+          type: array
+          items:
+            type: string
+        position:
+          description: "User's position"
+          $ref: '#/components/schemas/PositionDto'
+    PositionDto:
+      description: 'Users coordinates'
+      type: object
+      required:
+        - lat
+        - lon
+      properties:
+        lat:
+          type: number
+          format: double
+        lon:
+          type: number
+          format: double
+    CommentDto:
+      type: object
+      required:
+        - level
+        - name
+      properties:
+        id:
+          description: 'Comment id'
+          type: integer
+          format: int64
+        userId:
+          description: 'User id'
+          type: integer
+          format: int64
+        userName:
+          description: "User's name"
+          type: string
+        text:
+          description: 'Comment'
+          type: string
+        createdAt:
+          description: 'Time of publishing'
+          type: integer
+          format: int64
